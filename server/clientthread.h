@@ -10,7 +10,7 @@ class ClientThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ClientThread(qintptr id, QObject *parent = nullptr);
+    explicit ClientThread(qintptr socketId, QObject *parent = nullptr);
 
     void run();
 
@@ -21,6 +21,7 @@ public:
     void setCoalition(Coalition newCoalition);
 
 signals:
+    void printLog(const QString& message);
     void error(QTcpSocket::SocketError socketerror);
     void disconnectSocket(qintptr descriptor);
 
@@ -31,12 +32,8 @@ public slots:
 
 private:
     QTcpSocket* _socket = nullptr;
-    qintptr _socketDescriptor;
-
-    QString _username;
+    qintptr _socketId;
     Coalition _coalition = Coalition::Neutral;
-
-    QTextStream dataStream;
 };
 
 #endif // CLIENTTHREAD_H

@@ -12,15 +12,26 @@ public:
     static BackendManager* Instance(QObject* parent = nullptr);
     ~BackendManager();
 
+signals:
+    void sendData(const QByteArray& data);
+
 public slots:
-    bool connectToHost(const QString& ip, int port, const QString& username, const QString& password, const Coalition &coalition);
-    void disconnect();
+    bool connectToHost(const QString& ip, int port, const QString& password, const Coalition &coalition);
+    void disconnectSocket();
+
+private slots:
+    void readyRead();
 
 private:
     explicit BackendManager(QObject* parent = nullptr);
     static BackendManager* _instance;
 
-    QSharedPointer<QTcpSocket> _socket;
+    QString _ip;
+    int _port = 0;
+    Coalition _coalition = Coalition::Neutral;
+    QString _password;
+
+    QTcpSocket* _socket = nullptr;
 };
 
 

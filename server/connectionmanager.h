@@ -13,6 +13,9 @@ public:
     static ConnectionManager* Instance(QObject* parent = nullptr);
     ~ConnectionManager();
 
+signals:
+    void printLog(const QString& message);
+
 private slots:
     void newConnectionReceived();
     void clientDisconnected(qintptr descriptor);

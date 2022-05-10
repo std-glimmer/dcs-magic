@@ -1,4 +1,4 @@
-QT       += core gui network positioning
+QT       += core gui network positioning sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,8 +11,10 @@ CONFIG += c++11
 SOURCES += \
     ../lib/unitobject.cpp \
     ../lib/unitsmanager.cpp \
+    authmanager.cpp \
     clientthread.cpp \
     connectionmanager.cpp \
+    databasemanager.cpp \
     main.cpp \
     mainwindow.cpp \
     udpreceiver.cpp \
@@ -21,8 +23,10 @@ SOURCES += \
 HEADERS += \
     ../lib/unitobject.h \
     ../lib/unitsmanager.h \
+    authmanager.h \
     clientthread.h \
     connectionmanager.h \
+    databasemanager.h \
     mainwindow.h \
     udpreceiver.h \
     utils.h
@@ -34,3 +38,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

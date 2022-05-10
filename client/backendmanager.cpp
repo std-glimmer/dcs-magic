@@ -16,8 +16,7 @@ BackendManager* BackendManager::Instance(QObject* parent)
 }
 
 BackendManager::BackendManager(QObject* parent)
-    : QObject(parent),
-    _socket(QSharedPointer<QTcpSocket>::create(this))
+    : QObject(parent)
 {
 
 }
@@ -27,17 +26,40 @@ BackendManager::~BackendManager()
 
 }
 
-bool BackendManager::connectToHost(const QString &ip, int port, const QString &username, const QString &password, const Coalition& coalition)
+bool BackendManager::connectToHost(const QString &ip, int port, const QString &password, const Coalition& coalition)
 {
-    QTcpSocket* socket = new QTcpSocket(this);
-    socket->connectToHost(ip, port);
-    socket->waitForConnected();
+    disconnectSocket();
 
-    if (socket->state() == QAbstractSocket::ConnectedState)
+    _ip = ip;
+    _port = port;
+    _coalition = coalition;
+    _password = password;
+
+    _socket = new QTcpSocket(this);
+
+    connect(_socket, &QTcpSocket::readyRead, this, &BackendManager::readyRead, Qt::DirectConnection);
+    connect(_socket, &QTcpSocket::disconnected, this, &BackendManager::disconnectSocket);
+
+    _socket->connectToHost(ip, port);
+    _socket->waitForConnected();
+
+    return _socket->state() == QAbstractSocket::ConnectedState;
+}
+
+void BackendManager::readyRead()
+{
+    if (_socket == nullptr)
+    {
+        return;
+    }
+
+    QByteArray response = _socket->readAll();
+
+    if (response == "connected")
     {
         char coalitionChar = 'g';
 
-        switch(coalition)
+        switch(_coalition)
         {
         case Coalition::GameMaster:
             coalitionChar = 'g';
@@ -53,18 +75,30 @@ bool BackendManager::connectToHost(const QString &ip, int port, const QString &u
             break;
         }
 
-        auto authMessage = QStringLiteral("username:%1;password:%2;coalition:%3").arg(username).arg(password).arg(coalitionChar).toUtf8();
-        socket->write(authMessage);
-        socket->flush();
-        socket->waitForBytesWritten();
-        return true;
+        auto authMessage = QStringLiteral("coalition:%1;password:%2").arg(coalitionChar).arg(_password).toUtf8();
+        _socket->write(authMessage);
+        _socket->flush();
+        return;
     }
 
-    return false;
+    if (response.contains("[LOG]"))
+    {
+        qDebug() << response;
+    }
+    else
+    {
+        emit sendData(response);
+    }
 }
 
-void BackendManager::disconnect()
+void BackendManager::disconnectSocket()
 {
-    _socket->close();
+    if (_socket)
+    {
+        _socket->close();
+    }
+    delete _socket;
 }
+
+
 

@@ -15,9 +15,7 @@ public:
     explicit ConnectionDialog(QWidget *parent = nullptr);
     ~ConnectionDialog();
 
-    QString getIP() const;
-    int getPort() const;
-    QString getUsername() const;
+    QString getAddress() const;
     QString getPassword() const;
     Coalition getCoalition() const;
 

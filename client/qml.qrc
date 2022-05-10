@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>BaseTrack.qml</file>
+        <file>resources/images/airplane_blue.png</file>
+        <file>resources/images/airplane_neutral.png</file>
+        <file>resources/images/airplane_red.png</file>
+        <file>resources/images/carrier_blue.png</file>
+        <file>resources/images/carrier_neutral.png</file>
+        <file>resources/images/carrier_red.png</file>
+        <file>resources/images/heli_blue.png</file>
+        <file>resources/images/heli_neutral.png</file>
+        <file>resources/images/heli_red.png</file>
+        <file>resources/images/sam_blue.png</file>
+        <file>resources/images/sam_neutral.png</file>
+        <file>resources/images/sam_red.png</file>
+        <file>resources/images/seasurface_blue.png</file>
+        <file>resources/images/seasurface_neutral.png</file>
+        <file>resources/images/seasurface_red.png</file>
+        <file>resources/images/sub_blue.png</file>
+        <file>resources/images/sub_neutral.png</file>
+        <file>resources/images/sub_red.png</file>
+        <file>resources/images/radar_blue.png</file>
+        <file>resources/images/radar_neutral.png</file>
+        <file>resources/images/radar_radar.png</file>
+        <file>resources/images/unknown.png</file>
+        <file>resources/images/unknown_red.png</file>
+    </qresource>
+</RCC>

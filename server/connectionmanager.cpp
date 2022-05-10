@@ -38,11 +38,12 @@ ConnectionManager::~ConnectionManager()
 
 void ConnectionManager::newConnectionReceived()
 {
-    auto socketDescriptor = _server->nextPendingConnection()->socketDescriptor();
-    auto socketThread = new ClientThread(socketDescriptor, this);
-    _clients.insert(socketDescriptor, socketThread);
+    auto socket = _server->nextPendingConnection();
+    auto socketId = socket->socketDescriptor();
+    auto socketThread = new ClientThread(socketId, this);
+    _clients.insert(socketId, socketThread);
 
-    qDebug() << socketDescriptor << "New user";
+    connect(socketThread, &ClientThread::printLog, this, &ConnectionManager::printLog);
     connect(socketThread, &ClientThread::disconnectSocket, this, &ConnectionManager::clientDisconnected);
     socketThread->start();
 }

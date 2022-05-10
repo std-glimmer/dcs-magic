@@ -9,17 +9,26 @@ ConnectionDialog::ConnectionDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Dialog
+                   | Qt::WindowTitleHint
+                   | Qt::WindowStaysOnTopHint
+                   | Qt::CustomizeWindowHint
+                   | Qt::FramelessWindowHint
+                   );
+
     connect(ui->connectButton, &QPushButton::clicked, this, [this] ()
     {
         ui->reporter->clear();
 
-        if (getUsername().isEmpty() || getPassword().isEmpty() || getIP().isEmpty())
+        if (getPassword().isEmpty() || getAddress().isEmpty() || getAddress().split(":").size() != 2)
         {
-            ui->reporter->setText("Введите ip, порт, имя пользователя и пароль.");
+            ui->reporter->setText("Введите ip, порт и пароль.");
             return;
         }
 
-        if (BackendManager::Instance()->connectToHost(getIP(), getPort(), getUsername(), getPassword(), getCoalition()))
+        auto address = getAddress().split(":");
+
+        if (BackendManager::Instance()->connectToHost(address.first(), address.last().toInt(), getPassword(), getCoalition()))
         {
             accept();
         }
@@ -28,6 +37,8 @@ ConnectionDialog::ConnectionDialog(QWidget *parent) :
             ui->reporter->setText("Ошибка подключения.");
         }
     });
+
+    connect(ui->exitButton, &QPushButton::clicked, this, &QDialog::reject);
 }
 
 ConnectionDialog::~ConnectionDialog()
@@ -35,19 +46,9 @@ ConnectionDialog::~ConnectionDialog()
     delete ui;
 }
 
-QString ConnectionDialog::getIP() const
+QString ConnectionDialog::getAddress() const
 {
     return ui->ipLineEdit->text().trimmed();
-}
-
-int ConnectionDialog::getPort() const
-{
-    return ui->portLineEdit->text().trimmed().toInt();
-}
-
-QString ConnectionDialog::getUsername() const
-{
-    return ui->userLineEdit->text().trimmed();
 }
 
 QString ConnectionDialog::getPassword() const
@@ -76,7 +77,8 @@ Coalition ConnectionDialog::getCoalition() const
 void ConnectionDialog::clear()
 {
     ui->ipLineEdit->clear();
-    ui->portLineEdit->clear();
-    ui->userLineEdit->clear();
     ui->passwordLineEdit->clear();
+
+    ui->ipLineEdit->setText("127.0.0.1:9085");
+    ui->passwordLineEdit->setText("1234");
 }
