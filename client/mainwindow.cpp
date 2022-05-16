@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->listView->setModel(_unitsModel);
+//    ui->listView->setModel(_unitsModel);
 
     ui->quickWidget->setSource(QStringLiteral("qrc:/main.qml"));
 
@@ -34,11 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(_backendManager, &BackendManager::sendData, _recordsManager, &RecordsManager::receiveInfo);
     connect(_recordsManager, &RecordsManager::sendMessage, _unitsManager, &UnitsManager::receiveInfo);
     connect(_unitsManager, &UnitsManager::sendUnitData, this, &MainWindow::updateUnitData);
-    connect(ui->listView, &QListView::clicked, this, &MainWindow::unitSelected);
-    connect(ui->trackSlider, &QSlider::valueChanged, _recordsManager, &RecordsManager::selectMessage);
+//    connect(ui->listView, &QListView::clicked, this, &MainWindow::unitSelected);
+//    connect(ui->trackSlider, &QSlider::valueChanged, _recordsManager, &RecordsManager::selectMessage);
 
 //    connect(ui->connectButton, &QPushButton::clicked, this, &MainWindow::connectButtonClicked);
-    connect(ui->openTrackButton, &QPushButton::clicked, this, &MainWindow::openTrackButtonClicked);
+//    connect(ui->openTrackButton, &QPushButton::clicked, this, &MainWindow::openTrackButtonClicked);
 
     QMetaObject::invokeMethod(ui->quickWidget->rootObject(), "init");
     QMetaObject::invokeMethod(ui->quickWidget->rootObject(), "moveCenter",
@@ -85,11 +85,11 @@ void MainWindow::openTrackButtonClicked()
 
         _recordsManager->loadRecord(fileName);
 
-        ui->trackSlider->blockSignals(true);
-        ui->trackSlider->setRange(0, _recordsManager->countLoadedRecordMessages());
-        ui->trackSlider->blockSignals(false);
+//        ui->trackSlider->blockSignals(true);
+//        ui->trackSlider->setRange(0, _recordsManager->countLoadedRecordMessages());
+//        ui->trackSlider->blockSignals(false);
 
-        emit ui->trackSlider->valueChanged(0);
+//        emit ui->trackSlider->valueChanged(0);
     }
 }
 
