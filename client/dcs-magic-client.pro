@@ -11,20 +11,20 @@ CONFIG += c++14
 SOURCES += \
     ../lib/unitobject.cpp \
     ../lib/unitsmanager.cpp \
+    ../lib/recordsmanager.cpp \
     backendmanager.cpp \
     connectiondialog.cpp \
     main.cpp \
     mainwindow.cpp \
-    recordsmanager.cpp \
     unitsmodel.cpp
 
 HEADERS += \
     ../lib/unitobject.h \
     ../lib/unitsmanager.h \
+    ../lib/recordsmanager.h \
     backendmanager.h \
     connectiondialog.h \
     mainwindow.h \
-    recordsmanager.h \
     unitsmodel.h \
     utils.h
 

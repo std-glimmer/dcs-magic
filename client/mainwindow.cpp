@@ -10,7 +10,7 @@
 #include <QFileDialog>
 
 #include "../lib/unitsmanager.h"
-#include "recordsmanager.h"
+#include "../lib/recordsmanager.h"
 #include "unitsmodel.h"
 #include "backendmanager.h"
 

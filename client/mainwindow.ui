@@ -51,6 +51,12 @@
     </item>
     <item row="0" column="1">
      <widget class="QTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -61,7 +67,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="unitPage">
        <attribute name="title">
@@ -101,6 +107,12 @@
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="0" column="0">
             <widget class="QLabel" name="lbl_unitImage">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>100</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -168,6 +180,12 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="lbl_targetImage">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>100</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>

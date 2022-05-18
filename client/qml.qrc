@@ -2,28 +2,30 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>BaseTrack.qml</file>
-        <file>resources/images/airplane_blue.png</file>
-        <file>resources/images/airplane_neutral.png</file>
-        <file>resources/images/airplane_red.png</file>
-        <file>resources/images/carrier_blue.png</file>
-        <file>resources/images/carrier_neutral.png</file>
-        <file>resources/images/carrier_red.png</file>
-        <file>resources/images/heli_blue.png</file>
-        <file>resources/images/heli_neutral.png</file>
-        <file>resources/images/heli_red.png</file>
-        <file>resources/images/sam_blue.png</file>
-        <file>resources/images/sam_neutral.png</file>
-        <file>resources/images/sam_red.png</file>
-        <file>resources/images/seasurface_blue.png</file>
-        <file>resources/images/seasurface_neutral.png</file>
-        <file>resources/images/seasurface_red.png</file>
-        <file>resources/images/sub_blue.png</file>
-        <file>resources/images/sub_neutral.png</file>
-        <file>resources/images/sub_red.png</file>
-        <file>resources/images/radar_blue.png</file>
-        <file>resources/images/radar_neutral.png</file>
-        <file>resources/images/radar_radar.png</file>
-        <file>resources/images/unknown.png</file>
-        <file>resources/images/unknown_red.png</file>
+        <file>resources/images/units/airplane_blue.png</file>
+        <file>resources/images/units/airplane_neutral.png</file>
+        <file>resources/images/units/airplane_red.png</file>
+        <file>resources/images/units/carrier_blue.png</file>
+        <file>resources/images/units/carrier_neutral.png</file>
+        <file>resources/images/units/carrier_red.png</file>
+        <file>resources/images/units/heli_blue.png</file>
+        <file>resources/images/units/heli_neutral.png</file>
+        <file>resources/images/units/heli_red.png</file>
+        <file>resources/images/units/sam_blue.png</file>
+        <file>resources/images/units/sam_neutral.png</file>
+        <file>resources/images/units/sam_red.png</file>
+        <file>resources/images/units/seasurface_blue.png</file>
+        <file>resources/images/units/seasurface_neutral.png</file>
+        <file>resources/images/units/seasurface_red.png</file>
+        <file>resources/images/units/sub_blue.png</file>
+        <file>resources/images/units/sub_neutral.png</file>
+        <file>resources/images/units/sub_red.png</file>
+        <file>resources/images/units/radar_blue.png</file>
+        <file>resources/images/units/radar_neutral.png</file>
+        <file>resources/images/units/radar_radar.png</file>
+        <file>resources/images/units/unknown.png</file>
+        <file>resources/images/units/unknown_red.png</file>
+        <file>resources/images/unknown-en.png</file>
+        <file>resources/images/unknown-ru.png</file>
     </qresource>
 </RCC>

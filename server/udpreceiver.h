@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QUdpSocket>
 
+class RecordsManager;
+
 class UDPReceiver : public QObject
 {
     Q_OBJECT
@@ -33,6 +35,8 @@ private:
     int _port = 9085;
     QUdpSocket* _socket = nullptr;
     bool _isConnected = false;
+
+    RecordsManager* _recordsManager = nullptr;
 };
 
 #endif // UDPRECEIVER_H
