@@ -35,17 +35,31 @@ MainWindow::MainWindow(QWidget *parent)
     connect(_recordsManager, &RecordsManager::sendMessage, _unitsManager, &UnitsManager::receiveInfo);
     connect(_unitsManager, &UnitsManager::sendUnitData, this, &MainWindow::updateUnitData);
 //    connect(ui->listView, &QListView::clicked, this, &MainWindow::unitSelected);
-//    connect(ui->trackSlider, &QSlider::valueChanged, _recordsManager, &RecordsManager::selectMessage);
+    connect(ui->trackSlider, &QSlider::valueChanged, _recordsManager, &RecordsManager::selectMessage);
 
 //    connect(ui->connectButton, &QPushButton::clicked, this, &MainWindow::connectButtonClicked);
-//    connect(ui->openTrackButton, &QPushButton::clicked, this, &MainWindow::openTrackButtonClicked);
+
+    connect(ui->connectButton, &QToolButton::clicked, ui->act_connect, &QAction::triggered);
+    connect(ui->act_connect, &QAction::triggered, this, &MainWindow::connectButtonClicked);
+
+    connect(ui->act_disconnect, &QAction::triggered, this, [this] () {
+        _connectionDialog->disconnectFromServer();
+    });
+
+    connect(ui->act_trackStorage, &QAction::triggered, this, [this] () {
+        _connectionDialog->disconnectFromServer();
+    });
+
+    connect(BackendManager::Instance(), &BackendManager::disconnectedFromServer, this, [this] () {
+        setMode(Mode::Init);
+    });
+
+    connect(ui->loadTrack, &QToolButton::clicked, this, &MainWindow::openTrackButtonClicked);
 
     QMetaObject::invokeMethod(ui->quickWidget->rootObject(), "init");
     QMetaObject::invokeMethod(ui->quickWidget->rootObject(), "moveCenter",
                               Q_ARG(QVariant, QVariant::fromValue(QGeoCoordinate(43.21, 38.49))),
                               Q_ARG(QVariant, QVariant::fromValue(7)));
-
-    _loginTimerId = startTimer(10);
 }
 
 MainWindow::~MainWindow()
@@ -53,29 +67,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//void MainWindow::connectButtonClicked()
-//{
-//    clearMap();
+void MainWindow::connectButtonClicked()
+{
+    clearMap();
 
-//    if (_udpReceiver->isConnected())
-//    {
-//        _udpReceiver->stopListening();
-//        _recordsManager->stopRecording();
-//        ui->connectButton->setText("Подключиться");
-//        ui->openTrackButton->setEnabled(true);
-//    }
-//    else
-//    {
-//        _udpReceiver->startListening();
-//        _recordsManager->initNewRecord(QDateTime::currentDateTimeUtc().toString("hhmmssddMMyyyy"));
-//        ui->connectButton->setText("Отключиться");
-//        ui->openTrackButton->setEnabled(false);
-//    }
-//}
+    _connectionDialog->clear();
+    if (_connectionDialog->exec() == QDialog::Accepted)
+    {
+        setMode(Mode::Translation);
+    }
+    else
+    {
+        setMode(Mode::Init);
+    }
+}
 
 void MainWindow::openTrackButtonClicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open Track", _recordsManager->getRecordsPath(), tr("Tracks (*.txt)"));
+    QString fileName = QFileDialog::getOpenFileName(this, "Открыть запись", _recordsManager->getRecordsPath(), tr("Tracks (*.txt)"));
 
     if (QFile::exists(fileName))
     {
@@ -85,11 +94,12 @@ void MainWindow::openTrackButtonClicked()
 
         _recordsManager->loadRecord(fileName);
 
-//        ui->trackSlider->blockSignals(true);
-//        ui->trackSlider->setRange(0, _recordsManager->countLoadedRecordMessages());
-//        ui->trackSlider->blockSignals(false);
+        ui->trackSlider->blockSignals(true);
+        ui->trackSlider->setRange(0, _recordsManager->countLoadedRecordMessages());
+        ui->trackSlider->blockSignals(false);
 
-//        emit ui->trackSlider->valueChanged(0);
+        setMode(Mode::Track);
+        emit ui->trackSlider->valueChanged(0);
     }
 }
 
@@ -130,21 +140,26 @@ void MainWindow::clearMap()
     QMetaObject::invokeMethod( ui->quickWidget->rootObject(), "clearMap" );
 }
 
-void MainWindow::timerEvent(QTimerEvent *event)
+MainWindow::Mode MainWindow::mode() const
 {
-    if (_loginTimerId != event->timerId())
-    {
-        return;
-    }
+    return _mode;
+}
 
-    _connectionDialog->clear();
-    if (_connectionDialog->exec() == QDialog::Rejected)
+void MainWindow::setMode(Mode newMode)
+{
+    switch(_mode = newMode)
     {
-        _connectionDialog->close();
-        qApp->exit();
-    }
-    else
-    {
-        killTimer(_loginTimerId);
+    case Mode::Init:
+        ui->stackedWidget->setCurrentIndex(0);
+        ui->trackSlider->hide();
+        break;
+    case Mode::Translation:
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->trackSlider->hide();
+        break;
+    case Mode::Track:
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->trackSlider->show();
+        break;
     }
 }

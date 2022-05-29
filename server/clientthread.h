@@ -6,6 +6,8 @@
 #include <QDebug>
 #include "utils.h"
 
+class UDPReceiver;
+
 class ClientThread : public QThread
 {
     Q_OBJECT
@@ -32,6 +34,7 @@ public slots:
 
 private:
     QTcpSocket* _socket = nullptr;
+    UDPReceiver* _udpReceiver = nullptr;
     qintptr _socketId;
     Coalition _coalition = Coalition::Neutral;
 };

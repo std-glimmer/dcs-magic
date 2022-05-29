@@ -3,11 +3,13 @@
 #include "connectionmanager.h"
 #include "databasemanager.h"
 #include "authmanager.h"
+#include "udpreceiver.h"
 #include "../lib/unitsmanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow)//,
+    //_mainUDPReceiver(new UDPReceiver(this, true))
 {
     ui->setupUi(this);
 
@@ -15,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     AuthManager::Instance(this);
     ConnectionManager::Instance(this);
     UnitsManager::Instance(this);
+
+    //_mainUDPReceiver->startListening();
 
     connect(ConnectionManager::Instance(), &ConnectionManager::printLog, this, &MainWindow::printLog);
     connect(AuthManager::Instance(), &AuthManager::updated, this, &MainWindow::updatePasswords);

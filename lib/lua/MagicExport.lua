@@ -29,11 +29,22 @@ function Socket_export()
 
 	local o = LoGetWorldObjects()
 	for k,v in pairs(o) do
-		assert(
-			udp:send(
-				string.format("%f,%s,%s,%i,%i,%i,%i,%i,%f,%f,%f,%f;",
-				t, v.Name, v.UnitName, v.Type.level1, v.Type.level2, v.Type.level3, v.Type.level4,
-				v.CoalitionID, v.LatLongAlt.Lat, v.LatLongAlt.Long, v.LatLongAlt.Alt, v.Heading)))
+		if (v.UnitName) then
+			assert(udp:send(
+				string.format("%d,%s,%s,%d,%d,%d,%d,%d,%f,%f,%f,%f;\n",
+				LoGetModelTime(),
+				v.Name,
+				v.UnitName,
+				v.Type.level1,
+				v.Type.level2,
+				v.Type.level3,
+				v.Type.level4,
+				v.CoalitionID,
+				v.LatLongAlt.Lat,
+				v.LatLongAlt.Long,
+				v.LatLongAlt.Alt,
+				v.Heading)))
+		end
 	end
 end
 
@@ -942,4 +953,4 @@ To be continued...
 --                                      "mfd2"    - not used
 --                                      "mfd3"    - not used
 --                                      "mirrors" - mirrors
-dofile(".\\A10VCServer\\Main.lua") --A10VCHook
+--dofile(".\\A10VCServer\\Main.lua") --A10VCHook

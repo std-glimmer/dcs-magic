@@ -10,9 +10,7 @@ class UDPReceiver : public QObject
 {
     Q_OBJECT
 public:
-    static UDPReceiver *Instance(QObject* parent = nullptr);
-    UDPReceiver(UDPReceiver &other) = delete;
-    void operator=(const UDPReceiver &) = delete;
+    explicit UDPReceiver(QObject* parent = nullptr, bool isPrimary = false);
 
     void startListening();
     void stopListening();
@@ -29,14 +27,10 @@ private slots:
     void readPendingDatagrams();
 
 private:
-    explicit UDPReceiver(QObject* parent = nullptr);
-    static UDPReceiver* _instance;
-
-    int _port = 9085;
+    int _port = 6026;
     QUdpSocket* _socket = nullptr;
     bool _isConnected = false;
-
-    RecordsManager* _recordsManager = nullptr;
+    bool _isPrimary = false;
 };
 
 #endif // UDPRECEIVER_H
