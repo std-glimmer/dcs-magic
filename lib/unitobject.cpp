@@ -21,15 +21,15 @@ QString UnitObject::getImageSource()
     switch (_unitType.Level2)
     {
     case Level2UnitType::Airplane:
-        return "qrc:///resources/images/airplane_" + coalitionImageText + ".png";
+        return "qrc:///resources/images/units/airplane_" + coalitionImageText + ".png";
     case Level2UnitType::Helicopter:
-        return "qrc:///resources/images/heli_" + coalitionImageText + ".png";
+        return "qrc:///resources/images/units/heli_" + coalitionImageText + ".png";
     case Level2UnitType::Ship:
-        return "qrc:///resources/images/seasurface_" + coalitionImageText + ".png";
+        return "qrc:///resources/images/units/seasurface_" + coalitionImageText + ".png";
     case Level2UnitType::SAM:
-        return "qrc:///resources/images/sam_" + coalitionImageText + ".png";
+        return "qrc:///resources/images/units/sam_" + coalitionImageText + ".png";
     default:
-        return _coalition == Red ? "qrc:///resources/images/unknown_red.png" : "qrc:///resources/images/unknown.png";
+        return _coalition == Red ? "qrc:///resources/images/units/unknown_red.png" : "qrc:///resources/images/units/unknown.png";
     }
 }
 
@@ -39,6 +39,7 @@ void UnitObject::readDataFromMessage(const QString &message)
 
     if (unitData.count() < 9)
     {
+        _isValid = false;
         return;
     }
 
@@ -62,6 +63,8 @@ void UnitObject::readDataFromMessage(const QString &message)
     setLongitude(unitData.at(Longitude).toDouble());
     setAltitude(unitData.at(Altitude).toDouble());
     setHeading(unitData.at(Heading).toDouble());
+
+    _isValid = true;
 }
 
 QString UnitObject::lastUpdateTime() const
@@ -132,4 +135,9 @@ double UnitObject::heading() const
 void UnitObject::setHeading(double heading)
 {
     _heading = heading;
+}
+
+bool UnitObject::isValid() const
+{
+    return _isValid;
 }

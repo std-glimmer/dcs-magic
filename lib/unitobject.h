@@ -99,12 +99,16 @@ public:
     double heading() const;
     void setHeading(double heading);
 
+    bool isValid() const;
+
 private:
     QString _lastUpdateTime;
     QString _unitTitle;
     QString _unitName; // ID
     UnitType _unitType;
     CoalitionEnum _coalition = Neutral;
+
+    bool _isValid = false;
 
     double _latitude = 0;
     double _longitude = 0;

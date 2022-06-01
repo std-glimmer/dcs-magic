@@ -39,6 +39,7 @@ bool BackendManager::connectToHost(const QString &ip, int port, const QString &p
 
     connect(_socket, &QTcpSocket::readyRead, this, &BackendManager::readyRead, Qt::DirectConnection);
     connect(_socket, &QTcpSocket::disconnected, this, &BackendManager::disconnectSocket);
+    connect(_socket, &QTcpSocket::disconnected, this, &BackendManager::disconnectedFromServer);
 
     _socket->connectToHost(ip, port);
     _socket->waitForConnected();

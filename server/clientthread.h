@@ -6,6 +6,8 @@
 #include <QDebug>
 #include "utils.h"
 
+class UDPReceiver;
+
 class ClientThread : public QThread
 {
     Q_OBJECT

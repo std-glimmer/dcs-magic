@@ -27,7 +27,10 @@ void ClientThread::run()
     qDebug() << _socketId << "New user connected.";
 
     connect(_socket, &QTcpSocket::readyRead, this, &ClientThread::readyRead, Qt::DirectConnection);
+    connect(UDPReceiver::Instance(), &UDPReceiver::sendJSON, this, &ClientThread::sendData, Qt::DirectConnection);
     connect(_socket, &QTcpSocket::disconnected, this, &ClientThread::disconnected);
+
+    qDebug() << "run" << QThread::currentThreadId();
 
     _socket->write("connected");
     _socket->flush();
@@ -90,7 +93,7 @@ void ClientThread::readyRead()
         return;
     }
 
-    connect(UDPReceiver::Instance(), &UDPReceiver::sendJSON, this, &ClientThread::sendData);
+    qDebug() << "Connected" << QThread::currentThreadId();
 
     emit printLog(QStringLiteral("[%1] %2 GCI %3:%4 connected.")
                       .arg(QDateTime::currentDateTime().toString("dd.MM.yy hh:mm:ss"))
@@ -121,14 +124,25 @@ void ClientThread::sendData(const QByteArray &data)
         return;
     }
 
-    auto obj = UnitsManager::Instance()->getUnitViaMessage(data);
+    if (!_socket->isOpen() || !_socket->isValid())
+    {
+        return;
+    }
+
+    auto obj = UnitObject(data);
+
+    if (!obj.isValid())
+    {
+        return;
+    }
 
     if (
-        (obj->coalition() == UnitObject::CoalitionEnum::Red && (_coalition == Coalition::GameMaster || _coalition == Coalition::Red))
+        (obj.coalition() == UnitObject::CoalitionEnum::Red && (_coalition == Coalition::GameMaster || _coalition == Coalition::Red))
         ||
-        (obj->coalition() == UnitObject::CoalitionEnum::Blue && (_coalition == Coalition::GameMaster || _coalition == Coalition::Blue))
+        (obj.coalition() == UnitObject::CoalitionEnum::Blue && (_coalition == Coalition::GameMaster || _coalition == Coalition::Blue))
         )
     {
+        qDebug() << QThread::currentThreadId();
         _socket->write(data);
         _socket->flush();
     }

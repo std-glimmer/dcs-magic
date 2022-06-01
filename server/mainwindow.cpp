@@ -3,6 +3,7 @@
 #include "connectionmanager.h"
 #include "databasemanager.h"
 #include "authmanager.h"
+#include "udpreceiver.h"
 #include "../lib/unitsmanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -16,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     ConnectionManager::Instance(this);
     UnitsManager::Instance(this);
 
+    UDPReceiver::Instance(this)->startListening();
+
     connect(ConnectionManager::Instance(), &ConnectionManager::printLog, this, &MainWindow::printLog);
     connect(AuthManager::Instance(), &AuthManager::updated, this, &MainWindow::updatePasswords);
     emit AuthManager::Instance()->updated();
@@ -23,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    UDPReceiver::Instance()->stopListening();
     delete ui;
 }
 

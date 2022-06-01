@@ -10,9 +10,8 @@ class UDPReceiver : public QObject
 {
     Q_OBJECT
 public:
-    static UDPReceiver *Instance(QObject* parent = nullptr);
-    UDPReceiver(UDPReceiver &other) = delete;
-    void operator=(const UDPReceiver &) = delete;
+    static UDPReceiver* Instance(QObject* parent = nullptr);
+    ~UDPReceiver();
 
     void startListening();
     void stopListening();
@@ -32,11 +31,9 @@ private:
     explicit UDPReceiver(QObject* parent = nullptr);
     static UDPReceiver* _instance;
 
-    int _port = 9085;
+    int _port = 6026;
     QUdpSocket* _socket = nullptr;
     bool _isConnected = false;
-
-    RecordsManager* _recordsManager = nullptr;
 };
 
 #endif // UDPRECEIVER_H

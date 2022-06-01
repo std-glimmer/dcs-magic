@@ -13,30 +13,9 @@ ConnectionDialog::ConnectionDialog(QWidget *parent) :
                    | Qt::WindowTitleHint
                    | Qt::WindowStaysOnTopHint
                    | Qt::CustomizeWindowHint
-                   | Qt::FramelessWindowHint
                    );
 
-    connect(ui->connectButton, &QPushButton::clicked, this, [this] ()
-    {
-        ui->reporter->clear();
-
-        if (getPassword().isEmpty() || getAddress().isEmpty() || getAddress().split(":").size() != 2)
-        {
-            ui->reporter->setText("Введите ip, порт и пароль.");
-            return;
-        }
-
-        auto address = getAddress().split(":");
-
-        if (BackendManager::Instance()->connectToHost(address.first(), address.last().toInt(), getPassword(), getCoalition()))
-        {
-            accept();
-        }
-        else
-        {
-            ui->reporter->setText("Ошибка подключения.");
-        }
-    });
+    connect(ui->connectButton, &QPushButton::clicked, this, &ConnectionDialog::connectToServer);
 
     connect(ui->exitButton, &QPushButton::clicked, this, &QDialog::reject);
 }
@@ -44,6 +23,33 @@ ConnectionDialog::ConnectionDialog(QWidget *parent) :
 ConnectionDialog::~ConnectionDialog()
 {
     delete ui;
+}
+
+void ConnectionDialog::connectToServer()
+{
+    ui->reporter->clear();
+
+    if (getPassword().isEmpty() || getAddress().isEmpty() || getAddress().split(":").size() != 2)
+    {
+        ui->reporter->setText("Введите ip, порт и пароль.");
+        return;
+    }
+
+    auto address = getAddress().split(":");
+
+    if (BackendManager::Instance()->connectToHost(address.first(), address.last().toInt(), getPassword(), getCoalition()))
+    {
+        accept();
+    }
+    else
+    {
+        ui->reporter->setText("Ошибка подключения.");
+    }
+}
+
+void ConnectionDialog::disconnectFromServer()
+{
+    BackendManager::Instance()->disconnectSocket();
 }
 
 QString ConnectionDialog::getAddress() const

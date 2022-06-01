@@ -21,6 +21,10 @@ public:
 
     void clear();
 
+private slots:
+    void connectToServer();
+public slots:
+    void disconnectFromServer();
 private:
     Ui::ConnectionDialog *ui;
 };

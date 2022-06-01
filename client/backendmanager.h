@@ -14,6 +14,7 @@ public:
 
 signals:
     void sendData(const QByteArray& data);
+    void disconnectedFromServer();
 
 public slots:
     bool connectToHost(const QString& ip, int port, const QString& password, const Coalition &coalition);

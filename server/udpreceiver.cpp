@@ -1,12 +1,13 @@
 #include "udpreceiver.h"
 #include <QNetworkDatagram>
 #include <QDateTime>
+#include <QThread>
 
 #include "../lib/recordsmanager.h"
 
 UDPReceiver* UDPReceiver::_instance = nullptr;
 
-UDPReceiver *UDPReceiver::Instance(QObject *parent)
+UDPReceiver* UDPReceiver::Instance(QObject* parent)
 {
     if (_instance == nullptr)
     {
@@ -16,20 +17,24 @@ UDPReceiver *UDPReceiver::Instance(QObject *parent)
     return _instance;
 }
 
+UDPReceiver::~UDPReceiver()
+{
+
+}
+
 UDPReceiver::UDPReceiver(QObject *parent)
     :
       QObject(parent),
-      _socket(new QUdpSocket(this)),
-      _recordsManager(RecordsManager::Instance(this))
+      _socket(new QUdpSocket(this))
 {
     connect(_socket, &QUdpSocket::readyRead, this, &UDPReceiver::readPendingDatagrams);
-    connect(this, &UDPReceiver::sendJSON, _recordsManager, &RecordsManager::receiveInfo);
 }
 
 void UDPReceiver::startListening()
 {
-    /// TODO: сделать систему треков для каждой сессии
-    _recordsManager->initNewRecord(QDateTime::currentDateTimeUtc().toString("hhmmssddMMyyyy"));
+    connect(this, &UDPReceiver::sendJSON, RecordsManager::Instance(), &RecordsManager::receiveInfo);
+    RecordsManager::Instance()->initNewRecord(QDateTime::currentDateTimeUtc().toString("hhmmssddMMyyyy"));
+
     _socket->bind(QHostAddress::LocalHost, _port);
     _isConnected = true;
 }
@@ -38,7 +43,7 @@ void UDPReceiver::stopListening()
 {
     _socket->abort();
     _isConnected = false;
-    _recordsManager->stopRecording();
+    RecordsManager::Instance()->stopRecording();
 }
 
 bool UDPReceiver::isConnected()
@@ -58,7 +63,7 @@ void UDPReceiver::setPort(int port)
 
 void UDPReceiver::readPendingDatagrams()
 {
-    while ( _socket->hasPendingDatagrams() )
+    while (_socket->hasPendingDatagrams())
     {
         QNetworkDatagram datagram = _socket->receiveDatagram();
         emit sendJSON(datagram.data());

@@ -1,7 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
-import QtLocation 5.11
-import QtPositioning 5.11
+import QtLocation 5.15
+import QtPositioning 5.15
 
 Item
 {
@@ -14,7 +14,24 @@ Item
     Plugin
     {
         id: mapPlugin
-        name: "esri"
+
+        name: "osm" // osm mapboxgl esri
+        PluginParameter
+        {
+            name: "osm.mapping.providersrepository.disabled"
+            value: "true"
+        }
+        PluginParameter
+        {
+            name: "osm.mapping.providersrepository.address"
+            value: "http://maps-redirect.qt.io/osm/5.6/"
+        }
+
+//        qml: Cycle Map
+//        qml: Transit Map
+//        qml: Night Transit Map
+//        qml: Terrain Map
+//        qml: Hiking Map
     }
 
     Map
@@ -50,9 +67,16 @@ Item
     // Конструктор
     function init()
     {
+        setNightMode(true)
+    }
+
+    function setNightMode(isNightMode)
+    {
         for (var i = 0; i < map.supportedMapTypes.length; i++)
         {
-            if (map.supportedMapTypes[i].name === "Dark Gray Canvas")
+            if (isNightMode && map.supportedMapTypes[i].name === "Night Transit Map"
+                ||
+                !isNightMode && map.supportedMapTypes[i].name === "Terrain Map")
             {
                 map.activeMapType = map.supportedMapTypes[i];
             }

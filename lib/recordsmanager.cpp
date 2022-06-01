@@ -23,7 +23,7 @@ RecordsManager::~RecordsManager()
 RecordsManager::RecordsManager(QObject *parent)
     :
     QObject(parent),
-    _recordsDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QStringLiteral(u"/DCS_SA/")),
+    _recordsDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QStringLiteral(u"/dcs-magic/records/")),
     _fileHandler(new QFile),
     _textStream(new QTextStream)
 {
