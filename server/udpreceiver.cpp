@@ -65,6 +65,7 @@ void UDPReceiver::readPendingDatagrams()
 {
     while (_socket->hasPendingDatagrams())
     {
+        //qDebug() << "test" << QThread::currentThreadId();
         QNetworkDatagram datagram = _socket->receiveDatagram();
         emit sendJSON(datagram.data());
     }

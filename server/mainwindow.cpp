@@ -8,7 +8,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow)//,
+    //_mainUDPReceiver(new UDPReceiver(this, true))
 {
     ui->setupUi(this);
 

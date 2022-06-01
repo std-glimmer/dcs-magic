@@ -34,6 +34,7 @@ public slots:
 
 private:
     QTcpSocket* _socket = nullptr;
+    UDPReceiver* _udpReceiver = nullptr;
     qintptr _socketId;
     Coalition _coalition = Coalition::Neutral;
 };

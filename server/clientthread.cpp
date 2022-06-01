@@ -114,6 +114,9 @@ void ClientThread::disconnected()
     _socket->close();
     _socket->deleteLater();
 
+    _udpReceiver->stopListening();
+    _udpReceiver->deleteLater();
+
     exit(0);
 }
 
@@ -142,7 +145,7 @@ void ClientThread::sendData(const QByteArray &data)
         (obj.coalition() == UnitObject::CoalitionEnum::Blue && (_coalition == Coalition::GameMaster || _coalition == Coalition::Blue))
         )
     {
-        qDebug() << QThread::currentThreadId();
+        qDebug() << "sendData" << QThread::currentThreadId();
         _socket->write(data);
         _socket->flush();
     }

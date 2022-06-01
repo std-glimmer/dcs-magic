@@ -22,6 +22,8 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+
+    UDPReceiver* _mainUDPReceiver = nullptr;
 };
 
 #endif // MAINWINDOW_H
