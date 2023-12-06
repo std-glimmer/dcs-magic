@@ -60,12 +60,32 @@ MainWindow::MainWindow(QWidget *parent)
 
     QMetaObject::invokeMethod(ui->quickWidget->rootObject(), "init");
     QMetaObject::invokeMethod(ui->quickWidget->rootObject(), "moveCenter",
-                              Q_ARG(QVariant, QVariant::fromValue(QGeoCoordinate(43.21, 38.49))),
-                              Q_ARG(QVariant, QVariant::fromValue(7)));
+                              Q_ARG(QVariant, QVariant::fromValue(QGeoCoordinate(36.186267,37.597433))),
+                              Q_ARG(QVariant, QVariant::fromValue(18)));
 
     ui->act_nightMode->setChecked(true);
 
-    ui->stackedWidget->setCurrentIndex(Mode::Init);
+    ui->stackedWidget->setCurrentIndex(Mode::Translation);
+
+
+    QGeoCoordinate coordinate = QGeoCoordinate(36.186267,37.597433);
+    QString testTitle = "test";
+    QString imageSource = "qrc:///resources/images/test/test_rdr.png";
+
+    QMetaObject::invokeMethod(  ui->quickWidget->rootObject(), "addRadarImage",
+                              Q_ARG(QVariant, QVariant::fromValue(testTitle)),
+                              Q_ARG(QVariant, QVariant::fromValue(testTitle)),
+                              Q_ARG(QVariant, QVariant::fromValue(imageSource)),
+                              Q_ARG(QVariant, QVariant::fromValue(coordinate)));
+
+    testTitle = "test1";
+    imageSource = "qrc:///resources/images/units/unknown.png";
+
+    QMetaObject::invokeMethod(  ui->quickWidget->rootObject(), "updateUnitData",
+                              Q_ARG(QVariant, QVariant::fromValue(testTitle)),
+                              Q_ARG(QVariant, QVariant::fromValue(testTitle)),
+                              Q_ARG(QVariant, QVariant::fromValue(imageSource)),
+                              Q_ARG(QVariant, QVariant::fromValue(coordinate)));
 }
 
 MainWindow::~MainWindow()

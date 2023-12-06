@@ -1,7 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Window 2.11
-import QtLocation 5.15
-import QtPositioning 5.15
+import QtLocation 5.11
+import QtPositioning 5.11
 
 Item
 {
@@ -120,6 +120,21 @@ Item
         {
             track.coordinate = coordinates
         }
+    }
+
+    function addRadarImage(unitName, unitTitle, unitImageSource, coordinates)
+    {
+        var track;
+        track = Qt.createQmlObject ('BaseTrack {}', map)
+
+        track.unitName = unitName
+        track.unitTitle = unitTitle
+        track.coordinate = coordinates
+        track.imageWidth = 640
+        track.imageSource = unitImageSource
+        track.zoomLevel = map.zoomLevel
+
+        map.addMapItem(track)
     }
 
     function clearMap()

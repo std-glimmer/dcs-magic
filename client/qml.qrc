@@ -27,5 +27,7 @@
         <file>resources/images/units/unknown_red.png</file>
         <file>resources/images/unknown-en.png</file>
         <file>resources/images/unknown-ru.png</file>
+        <file>resources/images/test/test_lantirn.png</file>
+        <file>resources/images/test/test_rdr.png</file>
     </qresource>
 </RCC>

@@ -22,6 +22,8 @@ MapQuickItem
         width: imageWidth
         height: imageWidth
 
+        rotation: 249
+
         MouseArea
         {
             anchors.fill: parent
